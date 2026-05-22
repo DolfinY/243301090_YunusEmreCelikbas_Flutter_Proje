@@ -1,17 +1,43 @@
-# kayak_merkezi_app
+# 🏂 Kayak Merkezi - Skipass ve Ekipman Kiralama Uygulaması
 
-A new Flutter project.
+**Öğrenci Adı Soyadı:** Yunus Emre Çelikbaş
+**Öğrenci Numarası:** 243301090  
 
-## Getting Started
+Bu proje, bir kayak merkezindeki skipass (geçiş bileti) ve fiziksel ekipmanların dijital ortamda yönetilmesini ve kiralanmasını sağlayan mobil uygulamadır.
 
-This project is a starting point for a Flutter application.
+## 🔑 Test Hesapları
+Sistemi hızlıca test edebilmeniz için örnek hesap bilgileri:
 
-A few resources to get you started if this is your first Flutter project:
+**Admin Hesabı:**
+* Email: admin@test.com
+* Şifre: 123456
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+**Müşteri Hesabı:**
+* Email: musteri@test.com
+* Şifre: 123456
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+*(Not: Eğer veritabanını sıfırladıysanız, giriş ekranından kolayca bu rollerle yeni hesap oluşturabilirsiniz.)*
+
+## 📦 Kullanılan Paketler
+* `firebase_core`: Firebase bağlantı ve temel ayarları için.
+* `firebase_auth`: Kullanıcı kayıt, giriş ve oturum yönetimi için.
+* `cloud_firestore`: Ekipmanların, sepet işlemlerinin ve sistem loglarının gerçek zamanlı veritabanı işlemleri için.
+
+## 📸 Ekran Görüntüleri
+*(Yan yana düzgün görünmesi için HTML formatında boyutlandırılmıştır)*
+
+<p align="center">
+  <img src="screenshots/1.png" width="250" />
+  <img src="screenshots/2.png" width="250" />
+  <img src="screenshots/3.png" width="250" />
+  <img src="screenshots/4.png" width="250" />
+  <img src="screenshots/5.png" width="250" />
+  <img src="screenshots/6.png" width="250" />
+</p>
+
+## 🌟 Öne Çıkan Özellikler
+* **Rol Bazlı Yetki:** Adminler ürün ekleyip silebilirken, Müşteriler ürün kiralayabilir ve sepetlerini yönetebilir.
+* **Gelişmiş Filtreleme:** Ekipmanlar kendi içinde (Mont, Kask, vb.) anlık olarak filtrelenebilir.
+* **Dinamik Fiyatlama:** Gün seçimine göre toplam tutar anlık hesaplanır.
+* **Kişisel Sepet:** Müşterilerin aktif kiralamalarını gördüğü ve iptal edebildiği "Kiralamalarım" ekranı.
+* **Log Sistemi:** Sisteme giriş, ürün ekleme, silme ve kiralama gibi tüm hareketler anlık olarak loglanır ve Profil ekranında listelenir.
