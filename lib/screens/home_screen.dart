@@ -5,6 +5,7 @@ import '../services/auth_service.dart';
 import 'add_equipment_screen.dart';
 import 'detail_screen.dart';
 import 'my_rentals_screen.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -42,11 +43,10 @@ class _HomeScreenState extends State<HomeScreen> {
           .collection('users')
           .doc(currentUser!.uid)
           .get();
-      if (userDoc.exists) {
+      if (userDoc.exists)
         setState(() {
           userRole = userDoc['role'] ?? 'Müşteri';
         });
-      }
     }
   }
 
@@ -101,16 +101,22 @@ class _HomeScreenState extends State<HomeScreen> {
             if (userRole == 'Müşteri')
               IconButton(
                 icon: const Icon(Icons.shopping_bag),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MyRentalsScreen(),
-                    ),
-                  );
-                },
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MyRentalsScreen(),
+                  ),
+                ),
               ),
-            IconButton(icon: const Icon(Icons.person), onPressed: () {}),
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfileScreen(role: userRole),
+                ),
+              ),
+            ),
             IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () async => await _authService.signOut(),
@@ -134,7 +140,6 @@ class _HomeScreenState extends State<HomeScreen> {
               return const Center(child: CircularProgressIndicator());
 
             final allDocs = snapshot.requireData.docs;
-
             var skipassDocs = allDocs
                 .where(
                   (d) =>
@@ -166,20 +171,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         vertical: 8,
                       ),
                       child: Row(
-                        children: _filters.map((filter) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: ChoiceChip(
-                              label: Text(filter),
-                              selected: _selectedFilter == filter,
-                              onSelected: (selected) {
-                                setState(() {
-                                  _selectedFilter = filter;
-                                });
-                              },
-                            ),
-                          );
-                        }).toList(),
+                        children: _filters
+                            .map(
+                              (filter) => Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: ChoiceChip(
+                                  label: Text(filter),
+                                  selected: _selectedFilter == filter,
+                                  onSelected: (selected) => setState(() {
+                                    _selectedFilter = filter;
+                                  }),
+                                ),
+                              ),
+                            )
+                            .toList(),
                       ),
                     ),
                     Expanded(

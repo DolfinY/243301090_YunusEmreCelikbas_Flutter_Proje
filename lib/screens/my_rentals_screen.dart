@@ -19,9 +19,8 @@ class MyRentalsScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasError)
             return const Center(child: Text("Bir hata oluştu."));
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.waiting)
             return const Center(child: CircularProgressIndicator());
-          }
 
           final rentals = snapshot.requireData.docs;
 
@@ -53,10 +52,20 @@ class MyRentalsScreen extends StatelessWidget {
                   trailing: IconButton(
                     icon: const Icon(Icons.cancel, color: Colors.red),
                     onPressed: () async {
+                      await FirebaseFirestore.instance.collection('logs').add({
+                        'email':
+                            FirebaseAuth.instance.currentUser?.email ??
+                            'Bilinmiyor',
+                        'action':
+                            '${rental['equipmentName']} kiralama iptal edildi.',
+                        'timestamp': FieldValue.serverTimestamp(),
+                      });
+
                       await FirebaseFirestore.instance
                           .collection('rentals')
                           .doc(rental.id)
                           .delete();
+
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

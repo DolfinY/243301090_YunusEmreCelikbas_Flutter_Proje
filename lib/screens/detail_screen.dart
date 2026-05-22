@@ -58,6 +58,7 @@ class _DetailScreenState extends State<DetailScreen> {
               style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 30),
+
             if (widget.role == 'Müşteri') ...[
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -69,9 +70,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       color: Colors.red,
                     ),
                     onPressed: () {
-                      if (_days > 1) {
-                        setState(() => _days--);
-                      }
+                      if (_days > 1) setState(() => _days--);
                     },
                   ),
                   const SizedBox(width: 20),
@@ -89,9 +88,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       size: 40,
                       color: Colors.green,
                     ),
-                    onPressed: () {
-                      setState(() => _days++);
-                    },
+                    onPressed: () => setState(() => _days++),
                   ),
                 ],
               ),
@@ -105,7 +102,9 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
               ),
             ],
+
             const Spacer(),
+
             if (widget.role == 'Müşteri')
               ElevatedButton(
                 onPressed: () async {
@@ -119,6 +118,14 @@ class _DetailScreenState extends State<DetailScreen> {
                     'days': _days,
                     'totalPrice': totalPrice,
                     'createdAt': FieldValue.serverTimestamp(),
+                  });
+
+                  await FirebaseFirestore.instance.collection('logs').add({
+                    'email':
+                        FirebaseAuth.instance.currentUser?.email ??
+                        'Bilinmiyor',
+                    'action': '${widget.name} kiraladı.',
+                    'timestamp': FieldValue.serverTimestamp(),
                   });
 
                   if (context.mounted) {
@@ -136,13 +143,23 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
                 child: Text("$_days Gün İçin Kirala ($totalPrice TL)"),
               ),
+
             if (widget.role == 'Admin')
               ElevatedButton(
                 onPressed: () async {
+                  await FirebaseFirestore.instance.collection('logs').add({
+                    'email':
+                        FirebaseAuth.instance.currentUser?.email ??
+                        'Bilinmiyor',
+                    'action': '${widget.name} adlı ürünü sildi.',
+                    'timestamp': FieldValue.serverTimestamp(),
+                  });
+
                   await FirebaseFirestore.instance
                       .collection('equipments')
                       .doc(widget.id)
                       .delete();
+
                   if (context.mounted) Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(

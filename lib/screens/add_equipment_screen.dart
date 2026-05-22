@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AddEquipmentScreen extends StatefulWidget {
   const AddEquipmentScreen({super.key});
@@ -37,6 +38,12 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
             ? _selectedSubCategory
             : null,
         'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      await FirebaseFirestore.instance.collection('logs').add({
+        'email': FirebaseAuth.instance.currentUser?.email ?? 'Bilinmiyor',
+        'action': '$name adlı ürünü sisteme ekledi.',
+        'timestamp': FieldValue.serverTimestamp(),
       });
 
       if (mounted) Navigator.pop(context);
