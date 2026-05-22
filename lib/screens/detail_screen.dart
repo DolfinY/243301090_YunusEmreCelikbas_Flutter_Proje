@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DetailScreen extends StatefulWidget {
   final String id;
@@ -57,7 +58,6 @@ class _DetailScreenState extends State<DetailScreen> {
               style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 30),
-
             if (widget.role == 'Müşteri') ...[
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -105,18 +105,30 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
               ),
             ],
-
             const Spacer(),
-
             if (widget.role == 'Müşteri')
               ElevatedButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Kiralama talebi başarıyla alındı!"),
-                    ),
-                  );
-                  Navigator.pop(context);
+                onPressed: () async {
+                  final userId = FirebaseAuth.instance.currentUser!.uid;
+
+                  await FirebaseFirestore.instance.collection('rentals').add({
+                    'userId': userId,
+                    'equipmentId': widget.id,
+                    'equipmentName': widget.name,
+                    'category': widget.category,
+                    'days': _days,
+                    'totalPrice': totalPrice,
+                    'createdAt': FieldValue.serverTimestamp(),
+                  });
+
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Kiralama işlemi başarıyla tamamlandı!"),
+                      ),
+                    );
+                    Navigator.pop(context);
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
@@ -124,7 +136,6 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
                 child: Text("$_days Gün İçin Kirala ($totalPrice TL)"),
               ),
-
             if (widget.role == 'Admin')
               ElevatedButton(
                 onPressed: () async {

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
 import 'add_equipment_screen.dart';
 import 'detail_screen.dart';
+import 'my_rentals_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -97,6 +98,18 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: const Text("Kayak Merkezi"),
           actions: [
+            if (userRole == 'Müşteri')
+              IconButton(
+                icon: const Icon(Icons.shopping_bag),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MyRentalsScreen(),
+                    ),
+                  );
+                },
+              ),
             IconButton(icon: const Icon(Icons.person), onPressed: () {}),
             IconButton(
               icon: const Icon(Icons.logout),
@@ -182,7 +195,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-
                 skipassDocs.isEmpty
                     ? const Center(child: Text("Henüz Skipass eklenmemiş."))
                     : ListView.builder(
@@ -194,7 +206,6 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
         ),
-
         floatingActionButton: userRole == 'Admin'
             ? FloatingActionButton(
                 onPressed: () => Navigator.push(
