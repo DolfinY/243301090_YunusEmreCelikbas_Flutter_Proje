@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "694079096161",
+    "project_id": "kayak-merkezi-app",
+    "storage_bucket": "kayak-merkezi-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694079096161:android:b240bf92511880e8a1b120",
+        "android_client_info": {
+          "package_name": "com.example.kayak_merkezi_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWOXZPDsSQ3zacHKh5D8_pbdkBCz6dsBM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
